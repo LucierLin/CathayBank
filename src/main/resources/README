@@ -1,0 +1,107 @@
+**************************************
+*** please update the password in applicaation.properties first ***
+
+sql statement:
+
+drop schema cathayCommodity;
+
+create schema cathayCommodity;
+
+use cathayCommodity;
+
+create table commodity (data_grouping bit, seq_pk_id integer not null auto_increment, id bigint, name varchar(255), short_name varchar(255), primary key (seq_pk_id)) engine=InnoDB;
+
+create table commodity_price (unit_price float(53), commodity_id bigint, date_time datetime(6), id bigint not null auto_increment, primary key (id)) engine=InnoDB;
+
+**************************************
+
+<-- 用post呼叫本行api -->
+url : http://localhost:8080/api/processRequest
+
+request body:
+
+{
+    "req": {
+        "Keys": [
+            "10480016"
+        ],
+        "From": "2023/03/10",
+        "To": "2024/03/10"
+    }
+}
+
+**************************************
+
+<-- 查詢某日價格 -->
+url : http://localhost:8080/fund/findByDateTime
+
+request body:
+
+{
+    "id": "",
+    "dateTime": "2023/03/10",
+    "unitPrice": 0,
+    "From":"",
+    "To":""
+}
+
+**************************************
+
+<-- 修改某日價格 -->
+url : http://localhost:8080/fund/updatePriceByDate
+
+request body:
+
+{
+    "id": "10480016",
+    "dateTime": "2023/03/10",
+    "unitPrice":12.55,
+    "From":"",
+    "To":""
+}
+
+**************************************
+
+<-- 新增價格至 DB -->
+url : http://localhost:8080/fund/insertPrice
+
+request body:
+
+{
+    "id": "99999955",
+    "dateTime": "",
+    "unitPrice":99.55,
+    "From":"",
+    "To":""
+}
+
+**************************************
+
+<-- 可刪除某日價格 -->
+url : http://localhost:8080/fund/deletePriceByDate
+
+request body:
+
+{
+    "id": "99999955",
+    "dateTime": "2024/06/18",
+    "unitPrice":0,
+    "From":"",
+    "To":""
+}
+
+**************************************
+
+<-- 寫 interface 去帶入開始結束時間，分別實作計算漲跌[後收-前收]和漲跌幅[(後收-前收)/ 前收]-->
+url : http://localhost:8080/fund/caculatePriceByDate
+request body:
+
+{
+    "id": "",
+    "dateTime": "",
+    "unitPrice":0,
+    "From":"2023/03/10",
+    "To":"2023/03/13"
+}
+
+
